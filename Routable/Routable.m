@@ -301,12 +301,19 @@
   UIViewController *controller = nil;
   Class controllerClass = params.routerOptions.openClass;
   if ([controllerClass respondsToSelector:CONTROLLER_CLASS_SELECTOR]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     controller = [controllerClass performSelector:CONTROLLER_CLASS_SELECTOR withObject:[params getControllerParams]];
+#pragma clang diagnostic pop
+
   }
   else {
     controller = [params.routerOptions.openClass alloc];
     if ([controller respondsToSelector:CONTROLLER_SELECTOR]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
       controller = [controller performSelector:CONTROLLER_SELECTOR withObject:[params getControllerParams]];
+#pragma clang diagnostic pop
     }
   }
 
